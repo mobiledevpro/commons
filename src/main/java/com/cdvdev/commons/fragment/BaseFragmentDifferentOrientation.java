@@ -2,7 +2,9 @@ package com.cdvdev.commons.fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +18,18 @@ import android.view.ViewGroup;
  * www.mobile-dev.pro
  */
 
-public abstract class BaseFragmentDifferentOrientation extends BaseFragment {
+public abstract class BaseFragmentDifferentOrientation extends Fragment {
 
     private Bundle mSavedInstanceState;
+
+    @LayoutRes
+    public abstract int getLayoutResId();
+
+    public abstract Bundle saveStateForPopulateView();
+
+    public abstract void restoreStateForPopulateView(@Nullable Bundle savedState);
+
+    public abstract View populateView(View layoutView);
 
     public boolean isLayoutDifferentForOrientation() {
         return true;
@@ -32,8 +43,10 @@ public abstract class BaseFragmentDifferentOrientation extends BaseFragment {
         if (container != null) {
             container.removeAllViewsInLayout();
         }
-        View view = inflater.inflate(getLayoutResId(), container, false);
-        return populateView(view, savedInstanceState);
+        View view = populateView(inflater.inflate(getLayoutResId(), container, false));
+        //apply saved state
+        restoreStateForPopulateView(mSavedInstanceState);
+        return view;
     }
 
     @Override
@@ -41,6 +54,9 @@ public abstract class BaseFragmentDifferentOrientation extends BaseFragment {
         super.onConfigurationChanged(newConfig);
         if (!isLayoutDifferentForOrientation()) return;
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT || newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //save view state
+            Bundle savedState = saveStateForPopulateView();
+
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             //switch portrait or landscape layout on configuration changed
             //remove fragment view from container
@@ -48,8 +64,12 @@ public abstract class BaseFragmentDifferentOrientation extends BaseFragment {
             if (container != null) {
                 container.removeAllViewsInLayout();
             }
+            //populate view
             View view = inflater.inflate(getLayoutResId(), container, true);
-            populateView(view, mSavedInstanceState);
+            populateView(view);
+            //apply saved state
+            restoreStateForPopulateView(savedState != null ? savedState : mSavedInstanceState);
         }
     }
+
 }
