@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragmentDifferentOrientation extends BaseFragment {
 
+    private Bundle mSavedInstanceState;
+
     public boolean isLayoutDifferentForOrientation() {
         return true;
     }
@@ -25,12 +27,13 @@ public abstract class BaseFragmentDifferentOrientation extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mSavedInstanceState = savedInstanceState;
         //remove fragment view from container
         if (container != null) {
             container.removeAllViewsInLayout();
         }
         View view = inflater.inflate(getLayoutResId(), container, false);
-        return populateView(view);
+        return populateView(view, savedInstanceState);
     }
 
     @Override
@@ -46,7 +49,7 @@ public abstract class BaseFragmentDifferentOrientation extends BaseFragment {
                 container.removeAllViewsInLayout();
             }
             View view = inflater.inflate(getLayoutResId(), container, true);
-            populateView(view);
+            populateView(view, mSavedInstanceState);
         }
     }
 }

@@ -22,6 +22,8 @@ import android.view.Window;
 
 public abstract class CustomDialogFragment extends DialogFragment {
 
+    private Bundle mSavedInstanceState;
+
     @LayoutRes
     public abstract int getLayoutResId();
 
@@ -33,12 +35,14 @@ public abstract class CustomDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mSavedInstanceState = savedInstanceState;
+
         //remove fragment view from container
         if (container != null) {
             container.removeAllViewsInLayout();
         }
         View view = inflater.inflate(getLayoutResId(), container, false);
-        return populateView(view);
+        return populateView(view, savedInstanceState);
     }
 
     @Override
@@ -68,11 +72,11 @@ public abstract class CustomDialogFragment extends DialogFragment {
                 container.removeAllViewsInLayout();
             }
             View view = inflater.inflate(getLayoutResId(), container, true);
-            populateView(view);
+            populateView(view, mSavedInstanceState);
         }
     }
 
 
-    public abstract View populateView(View layoutView);
+    public abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);
 
 }

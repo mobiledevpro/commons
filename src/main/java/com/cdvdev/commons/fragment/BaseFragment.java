@@ -33,8 +33,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
-        return populateView(view);
+        return populateView(view, savedInstanceState);
     }
 
-    public abstract View populateView(View layoutView);
+    public abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);
 }
