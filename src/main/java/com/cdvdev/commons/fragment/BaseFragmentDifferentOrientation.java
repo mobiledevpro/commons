@@ -1,13 +1,18 @@
 package com.cdvdev.commons.fragment;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.cdvdev.commons.activity.IBaseActivity;
 
 /**
  * Base fragment with support the orientation change
@@ -72,4 +77,34 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
         }
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Activity activity = getActivity();
+        @StringRes int titleResId = getAppBarTitle();
+        @ColorRes int colorResId = getAppBarColor();
+
+        if (!(activity instanceof IBaseActivity)) {
+            if (colorResId > 0)
+                throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar color");
+            if (titleResId > 0)
+                throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar title");
+        } else {
+            if (titleResId > 0) ((IBaseActivity) activity).setAppBarTitle(titleResId);
+            if (colorResId > 0) ((IBaseActivity) activity).setAppBarColor(colorResId);
+        }
+
+    }
+
+    public
+    @StringRes
+    int getAppBarTitle() {
+        return 0;
+    }
+
+    public
+    @ColorRes
+    int getAppBarColor() {
+        return 0;
+    }
 }
