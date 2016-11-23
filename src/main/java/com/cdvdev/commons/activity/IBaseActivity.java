@@ -1,7 +1,7 @@
 package com.cdvdev.commons.activity;
 
 import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
+import android.support.annotation.NonNull;
 
 /**
  * Interface for Base Activity
@@ -13,7 +13,7 @@ import android.support.annotation.StringRes;
  */
 
 public interface IBaseActivity {
-    void setAppBarTitle(@StringRes int titleResId);
+    void setAppBarTitle(@NonNull String titleString);
 
     void setAppBarColor(@ColorRes int colorResId);
 }

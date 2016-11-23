@@ -2,7 +2,7 @@ package com.cdvdev.commons.activity;
 
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -28,6 +28,6 @@ public class BaseActivity extends AppCompatActivity implements IBaseActivity {
     }
 
     @Override
-    public void setAppBarTitle(@StringRes int titleResId) {
+    public void setAppBarTitle(@NonNull String titleString) {
     }
 }
