@@ -29,16 +29,24 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
     private Bundle mSavedInstanceState;
 
     @LayoutRes
-    public abstract int getLayoutResId();
+    protected abstract int getLayoutResId();
 
-    public abstract Bundle saveStateForPopulateView();
+    protected abstract Bundle saveStateForPopulateView();
 
-    public abstract void restoreStateForPopulateView(@Nullable Bundle savedState);
+    protected abstract void restoreStateForPopulateView(@Nullable Bundle savedState);
 
-    public abstract View populateView(View layoutView);
+    protected abstract View populateView(View layoutView);
 
-    public boolean isLayoutDifferentForOrientation() {
+    protected abstract void initPresenters();
+
+    protected boolean isLayoutDifferentForOrientation() {
         return true;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initPresenters();
     }
 
     @Nullable
@@ -103,20 +111,18 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
 
     }
 
-    public
     @StringRes
-    int getAppBarTitle() {
+    protected int getAppBarTitle() {
         return 0;
     }
 
     @NonNull
-    public String getAppBarTitleString() {
+    protected String getAppBarTitleString() {
         return "";
     }
 
-    public
     @ColorRes
-    int getAppBarColor() {
+    protected int getAppBarColor() {
         return 0;
     }
 }

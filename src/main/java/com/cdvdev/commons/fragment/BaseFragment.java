@@ -19,14 +19,16 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragment extends Fragment {
 
-    public abstract
     @LayoutRes
-    int getLayoutResId();
+    protected abstract int getLayoutResId();
+
+    protected abstract void initPresenters();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        initPresenters();
     }
 
     @Nullable
@@ -36,5 +38,5 @@ public abstract class BaseFragment extends Fragment {
         return populateView(view, savedInstanceState);
     }
 
-    public abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);
+    protected abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);
 }
