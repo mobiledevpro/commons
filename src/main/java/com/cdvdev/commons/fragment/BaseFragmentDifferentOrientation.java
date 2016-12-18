@@ -5,11 +5,14 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -46,6 +49,7 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(getOptionsMenuResId() > 0);
         initPresenters();
     }
 
@@ -111,6 +115,14 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (getOptionsMenuResId() > 0) {
+            inflater.inflate(getOptionsMenuResId(), menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     @StringRes
     protected int getAppBarTitle() {
         return 0;
@@ -123,6 +135,11 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
 
     @ColorRes
     protected int getAppBarColor() {
+        return 0;
+    }
+
+    @MenuRes
+    protected int getOptionsMenuResId() {
         return 0;
     }
 }

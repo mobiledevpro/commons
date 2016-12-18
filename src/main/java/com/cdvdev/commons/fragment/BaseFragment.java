@@ -2,9 +2,12 @@ package com.cdvdev.commons.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.MenuRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +31,7 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(getOptionsMenuResId() > 0);
         initPresenters();
     }
 
@@ -38,5 +42,18 @@ public abstract class BaseFragment extends Fragment {
         return populateView(view, savedInstanceState);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (getOptionsMenuResId() > 0) {
+            inflater.inflate(getOptionsMenuResId(), menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     protected abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);
+
+    @MenuRes
+    protected int getOptionsMenuResId() {
+        return 0;
+    }
 }
