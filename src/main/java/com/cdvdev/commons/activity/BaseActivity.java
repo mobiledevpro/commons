@@ -3,7 +3,6 @@ package com.cdvdev.commons.activity;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
 import android.support.annotation.ColorRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -25,8 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
     protected abstract void initToolbar();
 
-    @LayoutRes
-    protected abstract int getLayoutResId();
+    protected abstract void createView();
 
     protected abstract void populateView();
 
@@ -53,7 +51,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         }
 
         //setup view
-        setContentView(getLayoutResId());
+        createView();
+
         //setup toolbar
         initToolbar();
 
