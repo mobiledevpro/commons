@@ -3,10 +3,13 @@ package com.cdvdev.commons.activity;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
 import android.support.annotation.ColorRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -24,9 +27,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
     protected abstract void initToolbar();
 
-    protected abstract void createView();
+    @LayoutRes
+    protected abstract int getLayoutResId();
 
-    protected abstract void populateView();
+    protected abstract void populateView(View layoutView);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         }
 
         //setup view
-        createView();
+        setContentView(getLayoutResId());
 
         //setup toolbar
         initToolbar();
@@ -60,8 +64,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
         //setup presenters (if there is)
         initPresenters();
+
         //populate view
-        populateView();
+        View layoutView = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
+        populateView(layoutView);
     }
 
     @Override
