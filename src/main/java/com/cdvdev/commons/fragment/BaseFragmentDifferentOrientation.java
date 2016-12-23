@@ -57,10 +57,6 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mSavedInstanceState = savedInstanceState;
-        //remove fragment view from container
-        if (container != null) {
-            container.removeAllViewsInLayout();
-        }
         View view = populateView(inflater.inflate(getLayoutResId(), container, false));
         //apply saved state
         restoreStateForPopulateView(mSavedInstanceState);
