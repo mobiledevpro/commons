@@ -57,13 +57,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         //setup view
         setContentView(getLayoutResId());
 
+        //setup presenters (if there is)
+        initPresenters();
+
         //setup toolbar
         initToolbar();
 
         mFragmentManager = getSupportFragmentManager();
-
-        //setup presenters (if there is)
-        initPresenters();
 
         //populate view
         View layoutView = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
