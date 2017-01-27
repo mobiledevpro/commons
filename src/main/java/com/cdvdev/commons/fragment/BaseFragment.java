@@ -1,15 +1,21 @@
 package com.cdvdev.commons.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.MenuRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.cdvdev.commons.activity.IBaseActivity;
 
 /**
  * Base fragment class
@@ -43,6 +49,31 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Activity activity = getActivity();
+        String titleString = getAppBarTitleString();
+        @StringRes int titleResId = getAppBarTitle();
+        @ColorRes int colorResId = getAppBarColor();
+
+        if (!(activity instanceof IBaseActivity)) {
+            if (colorResId > 0)
+                throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar color");
+            if (titleResId > 0 || !titleString.equals(""))
+                throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar title");
+        } else {
+
+            if (titleResId > 0) {
+                ((IBaseActivity) activity).setAppBarTitle(activity.getResources().getString(titleResId));
+            } else if (!titleString.equals("")) {
+                ((IBaseActivity) activity).setAppBarTitle(titleString);
+            }
+            if (colorResId > 0) ((IBaseActivity) activity).setAppBarColor(colorResId);
+        }
+
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (getOptionsMenuResId() > 0) {
             inflater.inflate(getOptionsMenuResId(), menu);
@@ -51,6 +82,21 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);
+
+    @StringRes
+    protected int getAppBarTitle() {
+        return 0;
+    }
+
+    @NonNull
+    protected String getAppBarTitleString() {
+        return "";
+    }
+
+    @ColorRes
+    protected int getAppBarColor() {
+        return 0;
+    }
 
     @MenuRes
     protected int getOptionsMenuResId() {
