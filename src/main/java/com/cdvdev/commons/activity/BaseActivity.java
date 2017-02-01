@@ -3,6 +3,7 @@ package com.cdvdev.commons.activity;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +24,8 @@ import android.view.WindowManager;
 public abstract class BaseActivity extends AppCompatActivity implements IBaseActivity {
 
     protected FragmentManager mFragmentManager;
+
+    protected ActionBar mActionBar;
 
     protected abstract void initPresenters();
 
@@ -63,6 +66,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
         //setup toolbar
         initToolbar();
+
+        mActionBar = getSupportActionBar();
 
         mFragmentManager = getSupportFragmentManager();
 
@@ -105,6 +110,19 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
     @Override
     public void setAppBarTitle(@NonNull String titleString) {
+        //by default
+        if (mActionBar != null) {
+            mActionBar.setTitle(titleString);
+        }
+    }
+
+    @Override
+    public void setHomeAsUpIndicatorIcon(@DrawableRes int drawable) {
+        //by default
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setHomeAsUpIndicator(drawable);
+        }
     }
 
     /**
