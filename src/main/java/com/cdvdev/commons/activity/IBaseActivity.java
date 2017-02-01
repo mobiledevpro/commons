@@ -1,6 +1,7 @@
 package com.cdvdev.commons.activity;
 
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 /**
@@ -16,5 +17,7 @@ public interface IBaseActivity {
     void setAppBarTitle(@NonNull String titleString);
 
     void setAppBarColor(@ColorRes int colorResId);
+
+    void setHomeAsUpIndicatorIcon(@DrawableRes int drawable);
 }
 
