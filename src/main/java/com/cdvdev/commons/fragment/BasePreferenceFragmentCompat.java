@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,6 @@ public abstract class BasePreferenceFragmentCompat extends PreferenceFragmentCom
                 newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             resizeFrameView();
         }
-        Log.d("dvs_debug", "BasePreferenceFragmentCompat.onConfigurationChanged(): ");
     }
 
     @Override

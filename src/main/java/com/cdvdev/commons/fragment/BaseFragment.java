@@ -1,6 +1,7 @@
 package com.cdvdev.commons.fragment;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -10,13 +11,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import com.cdvdev.commons.R;
 import com.cdvdev.commons.activity.IBaseActivity;
+import com.cdvdev.commons.helpers.BaseResourcesHelper;
 
 /**
  * Base fragment class
@@ -28,6 +33,8 @@ import com.cdvdev.commons.activity.IBaseActivity;
  */
 
 public abstract class BaseFragment extends Fragment {
+
+    private View mCurrentFragmentLayout;
 
     @LayoutRes
     protected abstract int getLayoutResId();
@@ -77,6 +84,11 @@ public abstract class BaseFragment extends Fragment {
             if (homeIcon > 0) ((IBaseActivity) activity).setHomeAsUpIndicatorIcon(homeIcon);
         }
 
+        if (isTabletLandscapeAdaptive()) {
+            mCurrentFragmentLayout = view;
+            resizeFrameView();
+        }
+
     }
 
     @Override
@@ -85,6 +97,15 @@ public abstract class BaseFragment extends Fragment {
             inflater.inflate(getOptionsMenuResId(), menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT ||
+                newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            resizeFrameView();
+        }
     }
 
     protected abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);
@@ -112,6 +133,31 @@ public abstract class BaseFragment extends Fragment {
     @DrawableRes
     protected int getHomeAsUpIndicatorIcon() {
         return 0;
+    }
+
+    protected boolean isTabletLandscapeAdaptive() {
+        return false;
+    }
+
+    /**
+     * Resize frame view (for tablets)
+     */
+    private void resizeFrameView() {
+        if (mCurrentFragmentLayout == null) return;
+        //set a new width for settings list if it's a Tablet in landscape mode
+        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+        int[] displaySize = BaseResourcesHelper.getDisplaySize(getActivity());
+        if (isTablet) {
+            if (mCurrentFragmentLayout != null) {
+                // if (mCurrentFragmentLayout instanceof FrameLayout) {
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT);
+                layoutParams.width = displaySize[0] > displaySize[1] ? displaySize[1] : displaySize[0];
+                layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+                mCurrentFragmentLayout.setLayoutParams(layoutParams);
+            }
+        }
     }
 
 }
