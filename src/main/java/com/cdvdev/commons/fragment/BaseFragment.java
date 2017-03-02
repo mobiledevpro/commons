@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 
 import com.cdvdev.commons.R;
@@ -148,6 +149,14 @@ public abstract class BaseFragment extends Fragment {
         boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
         int[] displaySize = BaseResourcesHelper.getDisplaySize(getActivity());
         if (isTablet) {
+            //if parent view is not FrameLayout will be exception on set layout params
+            ViewParent parentView = mCurrentFragmentLayout.getParent();
+            if (!(parentView instanceof FrameLayout)) {
+                mCurrentFragmentLayout = ((ViewGroup) mCurrentFragmentLayout).getChildAt(0);
+            }
+
+            if (!(mCurrentFragmentLayout instanceof FrameLayout)) return;
+
             if (mCurrentFragmentLayout != null) {
                 // if (mCurrentFragmentLayout instanceof FrameLayout) {
                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
