@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.cdvdev.commons.helpers.BaseResourcesHelper;
+
 /**
  * Base Class for all Activities
  * <p/>
@@ -106,6 +108,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
     @Override
     public void setAppBarColor(@ColorRes int colorResId) {
+        BaseResourcesHelper.setStatusBarColor(this, colorResId);
     }
 
     @Override
