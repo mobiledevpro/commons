@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.cdvdev.commons.R;
 import com.cdvdev.commons.activity.IBaseActivity;
@@ -155,16 +156,18 @@ public abstract class BaseFragment extends Fragment {
                 mCurrentFragmentLayout = ((ViewGroup) mCurrentFragmentLayout).getChildAt(0);
             }
 
-            if (!(mCurrentFragmentLayout instanceof FrameLayout)) return;
+            if (mCurrentFragmentLayout instanceof FrameLayout
+                    || mCurrentFragmentLayout instanceof LinearLayout) {
 
-            if (mCurrentFragmentLayout != null) {
-                // if (mCurrentFragmentLayout instanceof FrameLayout) {
-                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT);
-                layoutParams.width = displaySize[0] > displaySize[1] ? displaySize[1] : displaySize[0];
-                layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-                mCurrentFragmentLayout.setLayoutParams(layoutParams);
+                if (mCurrentFragmentLayout != null) {
+                    // if (mCurrentFragmentLayout instanceof FrameLayout) {
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.MATCH_PARENT);
+                    layoutParams.width = displaySize[0] > displaySize[1] ? displaySize[1] : displaySize[0];
+                    layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+                    mCurrentFragmentLayout.setLayoutParams(layoutParams);
+                }
             }
         }
     }
