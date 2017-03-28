@@ -16,6 +16,8 @@ import android.support.annotation.NonNull;
 public interface IBaseActivity {
     void setAppBarTitle(@NonNull String titleString);
 
+    void setAppBarSubTitle(@NonNull String subTitleString);
+
     void setAppBarColor(@ColorRes int colorResId);
 
     void setHomeAsUpIndicatorIcon(@DrawableRes int drawable);

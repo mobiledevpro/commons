@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -63,7 +64,9 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = getActivity();
         String titleString = getAppBarTitleString();
+        String subTitleString = getAppBarSubTitleString();
         @StringRes int titleResId = getAppBarTitle();
+        @StringRes int subTitleResId = getAppBarSubTitle();
         @ColorRes int colorResId = getAppBarColor();
         @DrawableRes int homeIcon = getHomeAsUpIndicatorIcon();
 
@@ -81,6 +84,15 @@ public abstract class BaseFragment extends Fragment {
             } else if (!titleString.equals("")) {
                 ((IBaseActivity) activity).setAppBarTitle(titleString);
             }
+
+            if (subTitleResId > 0) {
+                ((IBaseActivity) activity).setAppBarSubTitle(activity.getResources().getString(subTitleResId));
+            } else if (!TextUtils.isEmpty(subTitleString)) {
+                ((IBaseActivity) activity).setAppBarSubTitle(subTitleString);
+            } else {
+                ((IBaseActivity) activity).setAppBarSubTitle("");
+            }
+
             if (colorResId > 0) ((IBaseActivity) activity).setAppBarColor(colorResId);
 
             if (homeIcon > 0) ((IBaseActivity) activity).setHomeAsUpIndicatorIcon(homeIcon);
@@ -119,6 +131,16 @@ public abstract class BaseFragment extends Fragment {
 
     @NonNull
     protected String getAppBarTitleString() {
+        return "";
+    }
+
+    @StringRes
+    protected int getAppBarSubTitle() {
+        return 0;
+    }
+
+    @NonNull
+    protected String getAppBarSubTitleString() {
         return "";
     }
 

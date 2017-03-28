@@ -9,12 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.cdvdev.commons.R;
 import com.cdvdev.commons.helpers.BaseResourcesHelper;
 
 /**
@@ -116,6 +118,24 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         //by default
         if (mActionBar != null) {
             mActionBar.setTitle(titleString);
+        }
+    }
+
+    @Override
+    public void setAppBarSubTitle(@NonNull String subTitleString) {
+        //by default
+        if (mActionBar != null) {
+            if (!TextUtils.isEmpty(subTitleString)) {
+                //set appbar min height
+                findViewById(R.id.appbar).setMinimumHeight(
+                        (int) BaseResourcesHelper.dpToPx(this, 72)
+                );
+            } else {
+                //remove appbar min height
+                findViewById(R.id.appbar).setMinimumHeight(0);
+            }
+
+            mActionBar.setSubtitle(subTitleString);
         }
     }
 
