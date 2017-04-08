@@ -1,6 +1,7 @@
 package com.cdvdev.commons.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -19,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -120,6 +122,17 @@ public abstract class BaseFragment extends Fragment {
                 newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             resizeFrameView();
         }
+    }
+
+    @Override
+    public void onStop() {
+        //hide keyboard if it shown
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        }
+        super.onStop();
     }
 
     protected abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);

@@ -1,5 +1,6 @@
 package com.cdvdev.commons.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
 import android.support.annotation.ColorRes;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.cdvdev.commons.R;
 import com.cdvdev.commons.helpers.BaseResourcesHelper;
@@ -89,6 +91,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        //hide keyboard if it shown
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        }
+        super.onStop();
     }
 
     @Override
