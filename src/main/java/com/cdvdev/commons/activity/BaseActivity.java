@@ -156,8 +156,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     public void setHomeAsUpIndicatorIcon(@DrawableRes int drawable) {
         //by default
         if (mActionBar != null) {
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-            mActionBar.setHomeAsUpIndicator(drawable);
+            if (drawable > 0) {
+                mActionBar.setDisplayHomeAsUpEnabled(true);
+                mActionBar.setHomeAsUpIndicator(drawable);
+            } else {
+                mActionBar.setDisplayHomeAsUpEnabled(false);
+            }
         }
     }
 
