@@ -194,7 +194,7 @@ public class BaseResourcesHelper {
      * @param valueInPx PX
      * @return DP
      */
-    public int pxToDp(Context context, int valueInPx) {
+    public static int pxToDp(Context context, int valueInPx) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return Math.round(valueInPx / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
