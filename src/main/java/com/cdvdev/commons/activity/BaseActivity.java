@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,10 @@ import com.cdvdev.commons.helpers.BaseResourcesHelper;
  * dmitriy.chernysh@gmail.com
  */
 public abstract class BaseActivity extends AppCompatActivity implements IBaseActivity {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     protected FragmentManager mFragmentManager;
 
