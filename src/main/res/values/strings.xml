@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Commons</string>
     <bool name="is_tablet">false</bool>
+
+    <string name="commons_button_allow">Allow</string>
+    <string name="commons_button_deny">Deny</string>
 </resources>
