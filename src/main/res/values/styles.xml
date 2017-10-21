@@ -10,7 +10,5 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="CommonAppTheme.AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">?android:attr/colorAccent</item>
-    </style>
+    <style name="CommonAppTheme.AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert"/>
 </resources>

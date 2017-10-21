@@ -12,6 +12,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -424,9 +425,10 @@ public class BasePermissionsHelper {
      * @param messageResId Message string id
      */
     public static void showExplanationDialog(@NonNull final Activity activity,
-                                             @StringRes int messageResId) {
+                                             @StringRes int messageResId,
+                                             @StyleRes int styleResId) {
         Resources resources = activity.getResources();
-        new AlertDialog.Builder(activity, R.style.CommonAppTheme_AlertDialog)
+        new AlertDialog.Builder(activity, styleResId > 0 ? styleResId : R.style.CommonAppTheme_AlertDialog)
                 .setMessage(messageResId)
                 .setPositiveButton(resources.getString(R.string.commons_button_allow), new DialogInterface.OnClickListener() {
                     @Override
