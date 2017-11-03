@@ -18,6 +18,8 @@ public interface IBaseActivity {
 
     void setAppBarSubTitle(@NonNull String subTitleString);
 
+    void setStatusBarColor(@ColorRes int colorResId);
+
     void setAppBarColor(@ColorRes int colorResId);
 
     void setHomeAsUpIndicatorIcon(@DrawableRes int drawable);

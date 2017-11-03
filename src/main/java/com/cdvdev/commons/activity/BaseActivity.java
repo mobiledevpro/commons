@@ -1,6 +1,7 @@
 package com.cdvdev.commons.activity;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
 import android.support.annotation.ColorRes;
@@ -127,8 +128,18 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     }
 
     @Override
-    public void setAppBarColor(@ColorRes int colorResId) {
+    public void setStatusBarColor(@ColorRes int colorResId) {
         BaseResourcesHelper.setStatusBarColor(this, colorResId);
+    }
+
+    @Override
+    public void setAppBarColor(int colorResId) {
+        if (mActionBar == null) return;
+        mActionBar.setBackgroundDrawable(
+                new ColorDrawable(
+                        BaseResourcesHelper.getColorCompatible(this, colorResId)
+                )
+        );
     }
 
     @Override

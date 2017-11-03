@@ -120,7 +120,7 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
             } else if (!titleString.equals("")) {
                 ((IBaseActivity) activity).setAppBarTitle(titleString);
             }
-            if (colorResId > 0) ((IBaseActivity) activity).setAppBarColor(colorResId);
+            if (colorResId > 0) ((IBaseActivity) activity).setStatusBarColor(colorResId);
 
             if (homeIcon > 0) ((IBaseActivity) activity).setHomeAsUpIndicatorIcon(homeIcon);
         }

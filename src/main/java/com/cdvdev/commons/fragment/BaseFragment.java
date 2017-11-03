@@ -69,11 +69,14 @@ public abstract class BaseFragment extends Fragment {
         String subTitleString = getAppBarSubTitleString();
         @StringRes int titleResId = getAppBarTitle();
         @StringRes int subTitleResId = getAppBarSubTitle();
-        @ColorRes int colorResId = getAppBarColor();
+        @ColorRes int appBarColorResId = getAppBarColor();
+        @ColorRes int statusBarColorResId = getStatusBarColor();
         @DrawableRes int homeIcon = getHomeAsUpIndicatorIcon();
 
         if (!(activity instanceof IBaseActivity)) {
-            if (colorResId > 0)
+            if (statusBarColorResId > 0)
+                throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set StatusBar color");
+            if (appBarColorResId > 0)
                 throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar color");
             if (titleResId > 0 || !titleString.equals(""))
                 throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar title");
@@ -95,7 +98,10 @@ public abstract class BaseFragment extends Fragment {
                 ((IBaseActivity) activity).setAppBarSubTitle("");
             }
 
-            if (colorResId > 0) ((IBaseActivity) activity).setAppBarColor(colorResId);
+            if (appBarColorResId > 0) ((IBaseActivity) activity).setAppBarColor(appBarColorResId);
+
+            if (statusBarColorResId > 0)
+                ((IBaseActivity) activity).setStatusBarColor(appBarColorResId);
 
             if (homeIcon > 0) ((IBaseActivity) activity).setHomeAsUpIndicatorIcon(homeIcon);
         }
@@ -155,6 +161,11 @@ public abstract class BaseFragment extends Fragment {
     @NonNull
     protected String getAppBarSubTitleString() {
         return "";
+    }
+
+    @ColorRes
+    protected int getStatusBarColor() {
+        return 0;
     }
 
     @ColorRes
