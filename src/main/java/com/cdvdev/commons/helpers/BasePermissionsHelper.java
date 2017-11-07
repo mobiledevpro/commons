@@ -97,7 +97,8 @@ public class BasePermissionsHelper {
      */
     public static boolean isSMSSendingPermissionGranted(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED);
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
         } else {
             return true;
         }
@@ -338,7 +339,7 @@ public class BasePermissionsHelper {
      */
     public static void requestSMSSendingPermission(Fragment fragment, int requestCode) {
         fragment.requestPermissions(
-                new String[]{Manifest.permission.SEND_SMS},
+                new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE},
                 requestCode);
     }
 
