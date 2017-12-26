@@ -428,8 +428,35 @@ public class BasePermissionsHelper {
     public static void showExplanationDialog(@NonNull final Activity activity,
                                              @StringRes int messageResId,
                                              @StyleRes int styleResId) {
+
+        createExplanationDialog(activity, messageResId, styleResId)
+                .show();
+    }
+
+    /**
+     * Show explanation dialog if user click "deny" on permission request
+     *
+     * @param activity       Activity
+     * @param messageResId   Message string id
+     * @param cancelListener DialogInterface.OnCancelListener
+     */
+    public static void showExplanationDialog(@NonNull final Activity activity,
+                                             @StringRes int messageResId,
+                                             @StyleRes int styleResId,
+                                             DialogInterface.OnCancelListener cancelListener) {
+
+        createExplanationDialog(activity, messageResId, styleResId)
+                .setOnCancelListener(cancelListener)
+                .show();
+    }
+
+    private static AlertDialog.Builder createExplanationDialog(@NonNull final Activity activity,
+                                                               @StringRes int messageResId,
+                                                               @StyleRes int styleResId) {
+
         Resources resources = activity.getResources();
-        new AlertDialog.Builder(activity, styleResId > 0 ? styleResId : R.style.CommonAppTheme_AlertDialog)
+
+        return new AlertDialog.Builder(activity, styleResId > 0 ? styleResId : R.style.CommonAppTheme_AlertDialog)
                 .setMessage(messageResId)
                 .setPositiveButton(resources.getString(R.string.commons_button_allow), new DialogInterface.OnClickListener() {
                     @Override
@@ -441,7 +468,6 @@ public class BasePermissionsHelper {
                     }
                 })
                 .setNegativeButton(resources.getString(R.string.commons_button_deny), null)
-                .setCancelable(false)
-                .show();
+                .setCancelable(false);
     }
 }
