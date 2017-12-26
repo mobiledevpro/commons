@@ -430,6 +430,7 @@ public class BasePermissionsHelper {
                                              @StyleRes int styleResId) {
 
         createExplanationDialog(activity, messageResId, styleResId)
+                .setNegativeButton(activity.getResources().getString(R.string.commons_button_deny), null)
                 .show();
     }
 
@@ -443,10 +444,10 @@ public class BasePermissionsHelper {
     public static void showExplanationDialog(@NonNull final Activity activity,
                                              @StringRes int messageResId,
                                              @StyleRes int styleResId,
-                                             DialogInterface.OnCancelListener cancelListener) {
+                                             DialogInterface.OnClickListener cancelListener) {
 
         createExplanationDialog(activity, messageResId, styleResId)
-                .setOnCancelListener(cancelListener)
+                .setNegativeButton(activity.getResources().getString(R.string.commons_button_deny), cancelListener)
                 .show();
     }
 
@@ -467,7 +468,6 @@ public class BasePermissionsHelper {
                         activity.startActivity(intent);
                     }
                 })
-                .setNegativeButton(resources.getString(R.string.commons_button_deny), null)
                 .setCancelable(false);
     }
 }
