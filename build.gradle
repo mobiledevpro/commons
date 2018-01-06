@@ -3,12 +3,12 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.mobile-dev-pro'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion 27
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion 19
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0.0"
     }
@@ -23,7 +23,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.android.support:preference-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:27.0.2"
+    compile "com.android.support:design:27.0.2"
+    compile "com.android.support:preference-v7:27.0.2"
 }
