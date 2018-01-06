@@ -1,4 +1,4 @@
-package com.cdvdev.commons.helpers;
+package com.mobiledevpro.commons.helpers;
 
 import android.app.Activity;
 import android.content.Context;

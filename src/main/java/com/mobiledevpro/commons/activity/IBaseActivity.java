@@ -1,4 +1,4 @@
-package com.cdvdev.commons.activity;
+package com.mobiledevpro.commons.activity;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;

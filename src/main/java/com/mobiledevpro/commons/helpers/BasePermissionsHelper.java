@@ -1,4 +1,4 @@
-package com.cdvdev.commons.helpers;
+package com.mobiledevpro.commons.helpers;
 
 import android.Manifest;
 import android.app.Activity;
@@ -18,7 +18,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
-import com.cdvdev.commons.R;
+import com.mobiledevpro.commons.R;
+
 
 /**
  * Helper for runtime permissions.

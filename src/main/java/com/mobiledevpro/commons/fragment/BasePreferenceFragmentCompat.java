@@ -1,4 +1,4 @@
-package com.cdvdev.commons.fragment;
+package com.mobiledevpro.commons.fragment;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
-import com.cdvdev.commons.R;
-import com.cdvdev.commons.helpers.BaseResourcesHelper;
+import com.mobiledevpro.commons.R;
+import com.mobiledevpro.commons.helpers.BaseResourcesHelper;
 
 /**
  * Base Fragment for Preferences

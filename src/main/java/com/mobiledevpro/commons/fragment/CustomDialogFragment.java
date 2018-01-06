@@ -1,4 +1,4 @@
-package com.cdvdev.commons.fragment;
+package com.mobiledevpro.commons.fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

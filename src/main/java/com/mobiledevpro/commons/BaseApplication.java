@@ -1,4 +1,4 @@
-package com.cdvdev.commons;
+package com.mobiledevpro.commons;
 
 import android.app.Application;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.cdvdev.commons.fragment.dialog;
+package com.mobiledevpro.commons.fragment.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

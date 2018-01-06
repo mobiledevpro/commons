@@ -1,4 +1,4 @@
-package com.cdvdev.commons.fragment.dialog;
+package com.mobiledevpro.commons.fragment.dialog;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,4 +1,4 @@
-package com.cdvdev.commons.activity;
+package com.mobiledevpro.commons.activity;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -20,8 +20,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.cdvdev.commons.R;
-import com.cdvdev.commons.helpers.BaseResourcesHelper;
+import com.mobiledevpro.commons.R;
+import com.mobiledevpro.commons.helpers.BaseResourcesHelper;
 
 /**
  * Base Class for all Activities

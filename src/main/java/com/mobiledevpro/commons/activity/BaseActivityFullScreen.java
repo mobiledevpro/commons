@@ -1,4 +1,4 @@
-package com.cdvdev.commons.activity;
+package com.mobiledevpro.commons.activity;
 
 /**
  * Base activity without toolbar (fullscreen activity)

@@ -1,4 +1,4 @@
-package com.cdvdev.commons.fragment;
+package com.mobiledevpro.commons.fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,13 +22,14 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
-import com.cdvdev.commons.R;
-import com.cdvdev.commons.activity.IBaseActivity;
-import com.cdvdev.commons.helpers.BaseResourcesHelper;
+import com.mobiledevpro.commons.R;
+import com.mobiledevpro.commons.activity.IBaseActivity;
+import com.mobiledevpro.commons.helpers.BaseResourcesHelper;
 
 /**
- * Base fragment with support the orientation change
+ * Base fragment class
  * <p>
  * Created by Dmitriy V. Chernysh on 04.11.16.
  * dmitriy.chernysh@gmail.com
@@ -35,29 +37,19 @@ import com.cdvdev.commons.helpers.BaseResourcesHelper;
  * www.mobile-dev.pro
  */
 
-public abstract class BaseFragmentDifferentOrientation extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
-    private Bundle mSavedInstanceState;
     private View mCurrentFragmentLayout;
 
     @LayoutRes
     protected abstract int getLayoutResId();
 
-    protected abstract Bundle saveStateForPopulateView();
-
-    protected abstract void restoreStateForPopulateView(@Nullable Bundle savedState);
-
-    protected abstract View populateView(View layoutView);
-
     protected abstract void initPresenters();
-
-    protected boolean isLayoutDifferentForOrientation() {
-        return true;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         setHasOptionsMenu(getOptionsMenuResId() > 0);
         initPresenters();
     }
@@ -65,36 +57,8 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mSavedInstanceState = savedInstanceState;
-        View view = populateView(inflater.inflate(getLayoutResId(), container, false));
-        //apply saved state
-        restoreStateForPopulateView(mSavedInstanceState);
-        return view;
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (!isLayoutDifferentForOrientation()) return;
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT || newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //save view state
-            Bundle savedState = saveStateForPopulateView();
-
-            LayoutInflater inflater = LayoutInflater.from(getActivity());
-            //switch portrait or landscape layout on configuration changed
-            //remove fragment view from container
-            ViewGroup container = (ViewGroup) getView();
-            if (container != null) {
-                container.removeAllViewsInLayout();
-            }
-            //populate view
-            View view = inflater.inflate(getLayoutResId(), container, true);
-            populateView(view);
-            //apply saved state
-            restoreStateForPopulateView(savedState != null ? savedState : mSavedInstanceState);
-
-            resizeFrameView();
-        }
+        View view = inflater.inflate(getLayoutResId(), container, false);
+        return populateView(view, savedInstanceState);
     }
 
     @Override
@@ -102,12 +66,17 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = getActivity();
         String titleString = getAppBarTitleString();
+        String subTitleString = getAppBarSubTitleString();
         @StringRes int titleResId = getAppBarTitle();
-        @ColorRes int colorResId = getAppBarColor();
+        @StringRes int subTitleResId = getAppBarSubTitle();
+        @ColorRes int appBarColorResId = getAppBarColor();
+        @ColorRes int statusBarColorResId = getStatusBarColor();
         @DrawableRes int homeIcon = getHomeAsUpIndicatorIcon();
 
         if (!(activity instanceof IBaseActivity)) {
-            if (colorResId > 0)
+            if (statusBarColorResId > 0)
+                throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set StatusBar color");
+            if (appBarColorResId > 0)
                 throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar color");
             if (titleResId > 0 || !titleString.equals(""))
                 throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar title");
@@ -120,7 +89,19 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
             } else if (!titleString.equals("")) {
                 ((IBaseActivity) activity).setAppBarTitle(titleString);
             }
-            if (colorResId > 0) ((IBaseActivity) activity).setStatusBarColor(colorResId);
+
+            if (subTitleResId > 0) {
+                ((IBaseActivity) activity).setAppBarSubTitle(activity.getResources().getString(subTitleResId));
+            } else if (!TextUtils.isEmpty(subTitleString)) {
+                ((IBaseActivity) activity).setAppBarSubTitle(subTitleString);
+            } else {
+                ((IBaseActivity) activity).setAppBarSubTitle("");
+            }
+
+            if (appBarColorResId > 0) ((IBaseActivity) activity).setAppBarColor(appBarColorResId);
+
+            if (statusBarColorResId > 0)
+                ((IBaseActivity) activity).setStatusBarColor(appBarColorResId);
 
             if (homeIcon > 0) ((IBaseActivity) activity).setHomeAsUpIndicatorIcon(homeIcon);
         }
@@ -141,6 +122,15 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT ||
+                newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            resizeFrameView();
+        }
+    }
+
+    @Override
     public void onStop() {
         //hide keyboard if it shown
         InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -151,6 +141,8 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
         super.onStop();
     }
 
+    protected abstract View populateView(View layoutView, @Nullable Bundle savedInstanceState);
+
     @StringRes
     protected int getAppBarTitle() {
         return 0;
@@ -159,6 +151,21 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
     @NonNull
     protected String getAppBarTitleString() {
         return "";
+    }
+
+    @StringRes
+    protected int getAppBarSubTitle() {
+        return 0;
+    }
+
+    @NonNull
+    protected String getAppBarSubTitleString() {
+        return "";
+    }
+
+    @ColorRes
+    protected int getStatusBarColor() {
+        return 0;
     }
 
     @ColorRes
@@ -195,17 +202,20 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
                 mCurrentFragmentLayout = ((ViewGroup) mCurrentFragmentLayout).getChildAt(0);
             }
 
-            if (!(mCurrentFragmentLayout instanceof FrameLayout)) return;
+            if (mCurrentFragmentLayout instanceof FrameLayout
+                    || mCurrentFragmentLayout instanceof LinearLayout) {
 
-            if (mCurrentFragmentLayout != null) {
-                // if (mCurrentFragmentLayout instanceof FrameLayout) {
-                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT);
-                layoutParams.width = displaySize[0] > displaySize[1] ? displaySize[1] : displaySize[0];
-                layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-                mCurrentFragmentLayout.setLayoutParams(layoutParams);
+                if (mCurrentFragmentLayout != null) {
+                    // if (mCurrentFragmentLayout instanceof FrameLayout) {
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.MATCH_PARENT);
+                    layoutParams.width = displaySize[0] > displaySize[1] ? displaySize[1] : displaySize[0];
+                    layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+                    mCurrentFragmentLayout.setLayoutParams(layoutParams);
+                }
             }
         }
     }
+
 }

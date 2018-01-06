@@ -1,4 +1,4 @@
-package com.cdvdev.commons.fragment;
+package com.mobiledevpro.commons.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
