@@ -1,17 +1,26 @@
-# commons
-Module with common classes and interfaces for most projects
+# commons-ui
+Android publiс library with common classes for UI
 
-#### Add constants to project-level build.gradle
+[![](https://jitpack.io/v/mobile-dev-pro/commons-ui.svg)](https://jitpack.io/#mobile-dev-pro/commons-ui)
+
+### How to include this library into project:
+
+1. Add it in your root build.gradle at the end of repositories:
 
 ```
-ext {
-    // sdk and tools versions
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.2"
-    minSdkVersion = 17
-    targetSdkVersion = 25
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
 
-    // dependencies versions
-    supportLibraryVersion = '25.3.1'
-}
+2. Add the dependency
+
+```
+	dependencies {
+	        compile 'com.github.mobile-dev-pro:commons-ui:VERSION'
+	}
+
 ```
