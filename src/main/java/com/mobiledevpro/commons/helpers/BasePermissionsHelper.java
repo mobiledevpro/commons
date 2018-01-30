@@ -168,6 +168,21 @@ public class BasePermissionsHelper {
     }
 
     /**
+     * Check SMS receive and read permissions
+     *
+     * @param context Context
+     * @return True - permission granted
+     */
+    public static boolean isReadSmsPermissionsGranted(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return (ContextCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED) &&
+                    (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED);
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Check several permissions
      *
      * @param context          Context
@@ -434,6 +449,37 @@ public class BasePermissionsHelper {
                 new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
+                },
+                requestCode);
+    }
+
+    /**
+     * Request permission for read sms
+     *
+     * @param activity    Activity
+     * @param requestCode Request code
+     */
+    public static void requestReadSmsPermission(Activity activity, int requestCode) {
+        ActivityCompat.requestPermissions(
+                activity,
+                new String[]{
+                        Manifest.permission.RECEIVE_SMS,
+                        Manifest.permission.READ_SMS
+                },
+                requestCode);
+    }
+
+    /**
+     * Request permission for read sms
+     *
+     * @param fragment    Fragment
+     * @param requestCode Request code
+     */
+    public static void requestReadSmsPermission(Fragment fragment, int requestCode) {
+        fragment.requestPermissions(
+                new String[]{
+                        Manifest.permission.RECEIVE_SMS,
+                        Manifest.permission.READ_SMS
                 },
                 requestCode);
     }
