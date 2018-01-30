@@ -167,6 +167,24 @@ public class BasePermissionsHelper {
         }
     }
 
+    /**
+     * Check several permissions
+     *
+     * @param context          Context
+     * @param permissionsArray Permissions array
+     * @return True - permission granted
+     */
+    public static boolean isPermissionsGranted(@NonNull Context context, String[] permissionsArray) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (String permission : permissionsArray) {
+                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Request Storage permission from fragment
@@ -417,6 +435,31 @@ public class BasePermissionsHelper {
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                 },
+                requestCode);
+    }
+
+    /**
+     * Request several permissions  from activity
+     *
+     * @param activity    Activity
+     * @param requestCode Request code
+     */
+    public static void requestPermissions(Activity activity, int requestCode, String[] permissionsArray) {
+        ActivityCompat.requestPermissions(
+                activity,
+                permissionsArray,
+                requestCode);
+    }
+
+    /**
+     * Request several permissions from fragment
+     *
+     * @param fragment    Fragment
+     * @param requestCode Request code
+     */
+    public static void requestPermissions(Fragment fragment, int requestCode, String[] permissionsArray) {
+        fragment.requestPermissions(
+                permissionsArray,
                 requestCode);
     }
 
