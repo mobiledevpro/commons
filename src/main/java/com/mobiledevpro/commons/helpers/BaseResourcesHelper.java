@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -142,7 +143,7 @@ public class BaseResourcesHelper {
      * @param drawableId Drawable Res id
      * @return Bitmap
      */
-    public static Bitmap getBitmapFromDrawable(Context context, @DrawableRes int drawableId) {
+    public static Bitmap getBitmapFromDrawable(Context context, @DrawableRes int drawableId) throws IllegalArgumentException {
         if (context == null) {
             throw new RuntimeException("Context can not be NULL");
         }
@@ -163,7 +164,7 @@ public class BaseResourcesHelper {
 
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
-        } else if (drawable instanceof VectorDrawableCompat) {
+        } else if (drawable instanceof VectorDrawableCompat || drawable instanceof LayerDrawable) {
             Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
                     drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
