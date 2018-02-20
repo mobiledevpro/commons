@@ -143,7 +143,7 @@ public class BaseResourcesHelper {
      * @param drawableId Drawable Res id
      * @return Bitmap
      */
-    public static Bitmap getBitmapFromDrawable(Context context, @DrawableRes int drawableId) throws IllegalArgumentException {
+    public static Bitmap getBitmapFromDrawable(Context context, @DrawableRes int drawableId) throws RuntimeException {
         if (context == null) {
             throw new RuntimeException("Context can not be NULL");
         }
@@ -152,10 +152,21 @@ public class BaseResourcesHelper {
         }
 
         Drawable drawable;
-        VectorDrawableCompat d = VectorDrawableCompat.create(
-                context.getResources(),
-                drawableId,
-                null);
+        VectorDrawableCompat d;
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            try {
+                d = VectorDrawableCompat.create(
+                        context.getResources(),
+                        drawableId,
+                        null);
+            } catch (Resources.NotFoundException e) {
+                d = null;
+            }
+        } else {
+            d = null;
+        }
+
         if (d != null) {
             drawable = DrawableCompat.wrap(d);
         } else {
@@ -172,7 +183,7 @@ public class BaseResourcesHelper {
             drawable.draw(canvas);
             return bitmap;
         } else {
-            throw new IllegalArgumentException("unsupported drawable type");
+            throw new IllegalArgumentException("Unsupported drawable type");
         }
     }
 
