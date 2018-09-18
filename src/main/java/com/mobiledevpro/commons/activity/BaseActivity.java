@@ -154,14 +154,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     public void setAppBarSubTitle(@NonNull String subTitleString) {
         //by default
         if (mActionBar != null) {
-            if (!TextUtils.isEmpty(subTitleString)) {
-                //set appbar min height
-                findViewById(R.id.appbar).setMinimumHeight(
-                        (int) BaseResourcesHelper.dpToPx(this, 72)
-                );
-            } else {
-                //remove appbar min height
-                findViewById(R.id.appbar).setMinimumHeight(0);
+            View view = findViewById(R.id.appbar);
+            if (view != null) {
+                if (!TextUtils.isEmpty(subTitleString)) {
+                    //set appbar min height
+                    view.setMinimumHeight(
+                            (int) BaseResourcesHelper.dpToPx(this, 72)
+                    );
+                } else {
+                    //remove appbar min height
+                    view.setMinimumHeight(0);
+                }
             }
 
             mActionBar.setSubtitle(subTitleString);
