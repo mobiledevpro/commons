@@ -1,6 +1,7 @@
 package com.mobiledevpro.commons.activity;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +50,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
     protected abstract void populateView(View layoutView);
 
+    protected abstract boolean isAdjustFontScaleToNormal();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (isAdjustFontScaleToNormal()) {
+            adjustFontScaleToNormal(getResources().getConfiguration());
+        }
         super.onCreate(savedInstanceState);
         //set start activity animation
         if (getStartEnterAnimation() > 0 || getStartExitAnimation() > 0) {
@@ -226,5 +233,25 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
     protected boolean isFullScreenActivity() {
         return false;
+    }
+
+    /**
+     * This method helps to ignore a device font scale.
+     * NOTE: User has ability to change font scale in device settings,
+     * in this case our font will be scaled too in the app
+     *
+     * @param configuration
+     */
+    private void adjustFontScaleToNormal(Configuration configuration) {
+        if (configuration.fontScale > 1.00) {
+            configuration.fontScale = (float) 1.00;
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+            if (wm != null) {
+                wm.getDefaultDisplay().getMetrics(metrics);
+                metrics.scaledDensity = configuration.fontScale * metrics.density;
+                getBaseContext().getResources().updateConfiguration(configuration, metrics);
+            }
+        }
     }
 }
