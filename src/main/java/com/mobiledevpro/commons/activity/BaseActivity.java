@@ -50,8 +50,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
     protected abstract void populateView(View layoutView);
 
-    protected abstract boolean isAdjustFontScaleToNormal();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (isAdjustFontScaleToNormal()) {
@@ -93,6 +91,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         //populate view
         View layoutView = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         populateView(layoutView);
+    }
+
+    protected boolean isAdjustFontScaleToNormal() {
+        return true;
     }
 
     @Override
