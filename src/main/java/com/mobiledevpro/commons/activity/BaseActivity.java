@@ -245,13 +245,23 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
      * @param configuration
      */
     private void adjustFontScaleToNormal(Configuration configuration) {
-        if (configuration.fontScale > 1.00) {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        int densityStable = DisplayMetrics.DENSITY_DEVICE_STABLE;
+        int densityDefault = DisplayMetrics.DENSITY_DEFAULT;
+        float defaultDensity = (float) densityStable / densityDefault;
+
+        if (configuration.fontScale > 1.00 || defaultDensity != metrics.density) {
             configuration.fontScale = (float) 1.00;
-            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            configuration.densityDpi = densityStable;
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
             if (wm != null) {
                 wm.getDefaultDisplay().getMetrics(metrics);
-                metrics.scaledDensity = configuration.fontScale * metrics.density;
+
+                metrics.setToDefaults();
+
+                metrics.density = defaultDensity;
+                metrics.scaledDensity = configuration.fontScale * configuration.densityDpi;
                 getBaseContext().getResources().updateConfiguration(configuration, metrics);
             }
         }
