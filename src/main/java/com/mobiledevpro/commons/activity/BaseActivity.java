@@ -262,8 +262,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
             if (wm != null) {
                 wm.getDefaultDisplay().getMetrics(metrics);
 
-                metrics.setToDefaults();
-
                 metrics.density = defaultDensity;
                 metrics.scaledDensity = configuration.fontScale * configuration.densityDpi;
                 getBaseContext().getResources().updateConfiguration(configuration, metrics);
