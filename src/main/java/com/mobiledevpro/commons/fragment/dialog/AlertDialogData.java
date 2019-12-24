@@ -2,15 +2,16 @@ package com.mobiledevpro.commons.fragment.dialog;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.StyleRes;
+
+import androidx.annotation.StyleRes;
 
 /**
  * Model class for Alert Dialog
  * <p>
- * Created by Dmitriy V. Chernysh on 25.01.17.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public class AlertDialogData implements Parcelable {

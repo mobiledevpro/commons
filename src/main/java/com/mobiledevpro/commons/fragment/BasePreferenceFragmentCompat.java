@@ -3,9 +3,6 @@ package com.mobiledevpro.commons.fragment;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
-import android.support.annotation.Nullable;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +12,17 @@ import android.widget.LinearLayout;
 import com.mobiledevpro.commons.R;
 import com.mobiledevpro.commons.helpers.BaseResourcesHelper;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceFragmentCompat;
+
 /**
  * Base Fragment for Preferences
  * <p>
- * Created by Dmitriy V. Chernysh on 24.02.17.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
- * <p>
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
  * #MobileDevPro
  */
 
@@ -40,7 +40,7 @@ public abstract class BasePreferenceFragmentCompat extends PreferenceFragmentCom
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT ||
                 newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -49,7 +49,7 @@ public abstract class BasePreferenceFragmentCompat extends PreferenceFragmentCom
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mCurrentFrameView = ((ViewGroup) view).getChildAt(0);
@@ -67,11 +67,13 @@ public abstract class BasePreferenceFragmentCompat extends PreferenceFragmentCom
 
     @Override
     public void onStop() {
-        //hide keyboard if it shown
-        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        if (getActivity() != null) {
+            //hide keyboard if it shown
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            View view = getActivity().getCurrentFocus();
+            if (view != null && inputManager != null) {
+                inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            }
         }
         super.onStop();
     }
@@ -81,6 +83,7 @@ public abstract class BasePreferenceFragmentCompat extends PreferenceFragmentCom
      */
     private void resizeFrameView() {
         if (mCurrentFrameView == null) return;
+        if (getActivity() == null) return;
         //set a new width for settings list if it's a Tablet in landscape mode
         boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
         int[] displaySize = BaseResourcesHelper.getDisplaySize(getActivity());

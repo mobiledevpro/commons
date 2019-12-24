@@ -10,25 +10,26 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+
 /**
  * Helper class for work with resources
  * <p>
- * Created by Dmitriy V. Chernysh on 12.11.16.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public class BaseResourcesHelper {

@@ -6,10 +6,10 @@ import android.content.Context;
 /**
  * Base class for Application main class
  * <p>
- * Created by Dmitriy V. Chernysh on 17.12.16.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public class BaseApplication extends Application {

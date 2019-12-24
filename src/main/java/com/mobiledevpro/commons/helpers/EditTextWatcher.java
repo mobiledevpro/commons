@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * Custom text watcher for EditText fields
  * <p>
- * Created by Dmitriy V. Chernysh on 06.01.17.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public class EditTextWatcher implements TextWatcher {

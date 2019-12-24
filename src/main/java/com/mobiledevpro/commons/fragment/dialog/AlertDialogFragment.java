@@ -3,18 +3,19 @@ package com.mobiledevpro.commons.fragment.dialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * Common alert dialog
  * <p>
- * Created by Dmitriy V. Chernysh on 25.01.17.
- * dmitriy.chernysh@gmail.com
+ * Created by Dmitriy V. Chernysh
  * <p>
- * www.mobile-dev.pro
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public class AlertDialogFragment extends DialogFragment {
@@ -34,7 +35,7 @@ public class AlertDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        AlertDialogData data = getArguments().getParcelable(KEY_DIALOG_DATA);
+        AlertDialogData data = getArguments() != null ? (AlertDialogData) getArguments().getParcelable(KEY_DIALOG_DATA) : null;
         String title = data != null ? data.getTitle() : "";
         String message = data != null ? data.getMessage() : "";
         String btnPositive = data != null ? data.getPositiveButtonText() : "";

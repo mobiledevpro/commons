@@ -1,15 +1,16 @@
 package com.mobiledevpro.commons.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 /**
  * Custom dialog fragment with no title bar and with translucent
  * <p>
- * Created by Dmitriy V. Chernysh on 04.11.16.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public abstract class CustomNoTitleDialogFragment extends CustomDialogFragment {

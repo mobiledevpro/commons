@@ -2,22 +2,24 @@ package com.mobiledevpro.commons.fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.fragment.app.DialogFragment;
+
 /**
  * Base Dialog Fragment
  * <p>
- * Created by Dmitriy V. Chernysh on 04.11.16.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public abstract class CustomDialogFragment extends DialogFragment {
@@ -46,7 +48,7 @@ public abstract class CustomDialogFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mSavedInstanceState = savedInstanceState;
 
         //remove fragment view from container
@@ -60,12 +62,12 @@ public abstract class CustomDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         @StyleRes int animationStyle = getDialogAnimationStyle();
 
-        if (animationStyle > 0) {
+        if (animationStyle != 0 && getDialog() != null) {
             Window window = getDialog().getWindow();
             if (window != null) {
                 window.getAttributes().windowAnimations = animationStyle;
@@ -74,7 +76,7 @@ public abstract class CustomDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (!isLayoutDifferentForOrientation()) return;
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT || newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {

@@ -5,15 +5,6 @@ import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.AnimRes;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -26,11 +17,23 @@ import android.view.inputmethod.InputMethodManager;
 import com.mobiledevpro.commons.R;
 import com.mobiledevpro.commons.helpers.BaseResourcesHelper;
 
+import androidx.annotation.AnimRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentManager;
+
 /**
  * Base Class for all Activities
  * <p/>
- * Created by Dmitriy V. Chernysh on 23.05.16.
- * dmitriy.chernysh@gmail.com
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 public abstract class BaseActivity extends AppCompatActivity implements IBaseActivity {
 
@@ -58,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         }
         super.onCreate(savedInstanceState);
         //set start activity animation
-        if (getStartEnterAnimation() > 0 || getStartExitAnimation() > 0) {
+        if (getStartEnterAnimation() != 0 || getStartExitAnimation() != 0) {
             overridePendingTransition(
                     getStartEnterAnimation(),
                     getStartExitAnimation());
@@ -124,7 +127,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     public void finish() {
         super.finish();
         //setup finish activity animation
-        if (getFinishEnterAnimation() > 0 || getFinishExitAnimation() > 0) {
+        if (getFinishEnterAnimation() != 0 || getFinishExitAnimation() != 0) {
             overridePendingTransition(
                     getFinishEnterAnimation(),
                     getFinishExitAnimation()
@@ -185,7 +188,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     public void setHomeAsUpIndicatorIcon(@DrawableRes int drawable) {
         //by default
         if (mActionBar != null) {
-            if (drawable > 0) {
+            if (drawable != 0) {
                 mActionBar.setDisplayHomeAsUpEnabled(true);
                 mActionBar.setHomeAsUpIndicator(drawable);
             } else {
@@ -255,7 +258,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         int densityDefault = DisplayMetrics.DENSITY_DEFAULT;
         float defaultDensity = (float) densityStable / densityDefault;
 
-        if (configuration.fontScale > 1.00 || defaultDensity != metrics.density) {
+        if (configuration.fontScale > 1.00 ||
+                (densityStable > 0 && defaultDensity != metrics.density)) {
             configuration.fontScale = (float) 1.00;
             if (densityStable > 0) configuration.densityDpi = densityStable;
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);

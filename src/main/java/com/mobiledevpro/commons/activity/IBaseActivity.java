@@ -1,16 +1,16 @@
 package com.mobiledevpro.commons.activity;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 /**
  * Interface for Base Activity
  * <p>
- * Created by Dmitriy V. Chernysh on 31.10.16.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public interface IBaseActivity {

@@ -10,25 +10,24 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 
 import com.mobiledevpro.commons.R;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 
 /**
  * Helper for runtime permissions.
  * <p>
  * Created by Dmitriy V. Chernysh
- * dmitriy.chernysh@gmail.com
- * <p>
- * https://fb.me/mobiledevpro/
- * <p>
+ *
+ * https://instagr.am/mobiledevpro
  * #MobileDevPro
  */
 
@@ -547,7 +546,7 @@ public class BasePermissionsHelper {
 
         Resources resources = activity.getResources();
 
-        return new AlertDialog.Builder(activity, styleResId > 0 ? styleResId : R.style.CommonAppTheme_AlertDialog)
+        return new AlertDialog.Builder(activity, styleResId != 0 ? styleResId : R.style.CommonAppTheme_AlertDialog)
                 .setMessage(messageResId)
                 .setPositiveButton(resources.getString(R.string.commons_button_allow), new DialogInterface.OnClickListener() {
                     @Override

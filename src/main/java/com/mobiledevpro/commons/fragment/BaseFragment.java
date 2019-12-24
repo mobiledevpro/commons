@@ -4,14 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.MenuRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,13 +20,22 @@ import com.mobiledevpro.commons.R;
 import com.mobiledevpro.commons.activity.IBaseActivity;
 import com.mobiledevpro.commons.helpers.BaseResourcesHelper;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+
 /**
  * Base fragment class
  * <p>
- * Created by Dmitriy V. Chernysh on 04.11.16.
- * dmitriy.chernysh@gmail.com
- * <p>
- * www.mobile-dev.pro
+ * Created by Dmitriy V. Chernysh
+ *
+ * https://instagr.am/mobiledevpro
+ * #MobileDevPro
  */
 
 public abstract class BaseFragment extends Fragment {
@@ -50,7 +51,7 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(getOptionsMenuResId() > 0);
+        setHasOptionsMenu(getOptionsMenuResId() != 0);
         initPresenters();
     }
 
@@ -62,7 +63,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = getActivity();
         String titleString = getAppBarTitleString();
@@ -74,23 +75,23 @@ public abstract class BaseFragment extends Fragment {
         @DrawableRes int homeIcon = getHomeAsUpIndicatorIcon();
 
         if (!(activity instanceof IBaseActivity)) {
-            if (statusBarColorResId > 0)
+            if (statusBarColorResId != 0)
                 throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set StatusBar color");
-            if (appBarColorResId > 0)
+            if (appBarColorResId != 0)
                 throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar color");
-            if (titleResId > 0 || !titleString.equals(""))
+            if (titleResId != 0 || !titleString.equals(""))
                 throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set AppBar title");
-            if (homeIcon > 0)
+            if (homeIcon != 0)
                 throw new UnsupportedOperationException("Your activity should extends from 'com.cdvdev.commons.activity.BaseActivity' for set home indicator icon");
         } else {
 
-            if (titleResId > 0) {
+            if (titleResId != 0) {
                 ((IBaseActivity) activity).setAppBarTitle(activity.getResources().getString(titleResId));
             } else if (!titleString.equals("")) {
                 ((IBaseActivity) activity).setAppBarTitle(titleString);
             }
 
-            if (subTitleResId > 0) {
+            if (subTitleResId != 0) {
                 ((IBaseActivity) activity).setAppBarSubTitle(activity.getResources().getString(subTitleResId));
             } else if (!TextUtils.isEmpty(subTitleString)) {
                 ((IBaseActivity) activity).setAppBarSubTitle(subTitleString);
@@ -98,12 +99,12 @@ public abstract class BaseFragment extends Fragment {
                 ((IBaseActivity) activity).setAppBarSubTitle("");
             }
 
-            if (appBarColorResId > 0) ((IBaseActivity) activity).setAppBarColor(appBarColorResId);
+            if (appBarColorResId != 0) ((IBaseActivity) activity).setAppBarColor(appBarColorResId);
 
-            if (statusBarColorResId > 0)
+            if (statusBarColorResId != 0)
                 ((IBaseActivity) activity).setStatusBarColor(appBarColorResId);
 
-            if (homeIcon > 0) ((IBaseActivity) activity).setHomeAsUpIndicatorIcon(homeIcon);
+            if (homeIcon != 0) ((IBaseActivity) activity).setHomeAsUpIndicatorIcon(homeIcon);
         }
 
         if (isTabletLandscapeAdaptive()) {
@@ -114,15 +115,15 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (getOptionsMenuResId() > 0) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if (getOptionsMenuResId() != 0) {
             inflater.inflate(getOptionsMenuResId(), menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT ||
                 newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -132,11 +133,13 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onStop() {
-        //hide keyboard if it shown
-        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        if (getActivity() != null) {
+            //hide keyboard if it shown
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            View view = getActivity().getCurrentFocus();
+            if (view != null && inputManager != null) {
+                inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            }
         }
         super.onStop();
     }
@@ -192,6 +195,7 @@ public abstract class BaseFragment extends Fragment {
      */
     private void resizeFrameView() {
         if (mCurrentFragmentLayout == null) return;
+        if (getActivity() == null) return;
         //set a new width for settings list if it's a Tablet in landscape mode
         boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
         int[] displaySize = BaseResourcesHelper.getDisplaySize(getActivity());
