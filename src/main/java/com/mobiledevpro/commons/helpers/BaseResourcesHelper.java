@@ -88,6 +88,20 @@ public class BaseResourcesHelper {
         }
     }
 
+    @ColorInt
+    public static int getThemeColorCompatible(Context context, @AttrRes int id) {
+        if (context == null) {
+            throw new RuntimeException("Context can not be NULL");
+        }
+        if (id == 0) {
+            throw new RuntimeException("Color Resource ID can not be 0");
+        }
+
+        TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(id, value, true);
+        return value.data;
+    }
+
     /**
      * Get VectorDrawable compatible with API < 23
      *
