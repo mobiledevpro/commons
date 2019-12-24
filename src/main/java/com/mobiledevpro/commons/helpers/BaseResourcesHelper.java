@@ -15,6 +15,7 @@ import android.util.TypedValue;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
@@ -27,7 +28,7 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
  * Helper class for work with resources
  * <p>
  * Created by Dmitriy V. Chernysh
- *
+ * <p>
  * https://instagr.am/mobiledevpro
  * #MobileDevPro
  */
@@ -48,11 +49,22 @@ public class BaseResourcesHelper {
         }
 
         Resources res = context.getResources();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return res.getDrawable(drawableResId, context.getTheme());
-        } else {
-            return res.getDrawable(drawableResId);
+        return res.getDrawable(drawableResId, context.getTheme());
+
+    }
+
+    public static Drawable getThemeDrawable(Context context, @AttrRes int drawableResId) {
+        if (context == null) {
+            throw new RuntimeException("Context can not be NULL");
         }
+        if (drawableResId == 0) {
+            throw new RuntimeException("Drawable Resource ID can not be 0");
+        }
+
+        TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(drawableResId, value, true);
+
+        return context.getResources().getDrawable(value.resourceId, context.getTheme());
     }
 
     /**
@@ -224,9 +236,7 @@ public class BaseResourcesHelper {
         int displayWidth = displaySize.x;
         int displayHeight = displaySize.y;
 
-        int[] size = {displayWidth, displayHeight};
-
-        return size;
+        return new int[]{displayWidth, displayHeight};
     }
 
 }
