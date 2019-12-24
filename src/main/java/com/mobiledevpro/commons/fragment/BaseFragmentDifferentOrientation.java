@@ -135,6 +135,8 @@ public abstract class BaseFragmentDifferentOrientation extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        //Menu items are doubling after fragment has been re-created. Need to call clear()
+        menu.clear();
         if (getOptionsMenuResId() != 0) {
             inflater.inflate(getOptionsMenuResId(), menu);
         }
