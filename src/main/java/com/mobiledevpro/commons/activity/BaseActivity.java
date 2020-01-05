@@ -54,6 +54,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
     protected abstract void populateView(View layoutView);
 
+    protected abstract boolean isAdjustFontScaleToNormal();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (isAdjustFontScaleToNormal()) {
@@ -95,10 +97,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         //populate view
         View layoutView = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         populateView(layoutView);
-    }
-
-    protected boolean isAdjustFontScaleToNormal() {
-        return true;
     }
 
     @Override
@@ -249,27 +247,32 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
      * @param configuration
      */
     private void adjustFontScaleToNormal(Configuration configuration) {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        if (wm == null) return;
 
-        int densityStable = 0;
+        //Device may has different screen resolution modes.
+        //As example, Samsung S8: 422 in FHD+, 562 in WQHD+
+        int xDpi = (int) getResources().getDisplayMetrics().xdpi;
+
+        int densityDpiStable = Configuration.DENSITY_DPI_UNDEFINED;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            densityStable = DisplayMetrics.DENSITY_DEVICE_STABLE;
+            densityDpiStable = DisplayMetrics.DENSITY_DEVICE_STABLE; //480
         }
-        int densityDefault = DisplayMetrics.DENSITY_DEFAULT;
-        float defaultDensity = (float) densityStable / densityDefault;
 
-        if (configuration.fontScale > 1.00 ||
-                (densityStable > 0 && defaultDensity != metrics.density)) {
-            configuration.fontScale = (float) 1.00;
-            if (densityStable > 0) configuration.densityDpi = densityStable;
-            WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-            if (wm != null) {
-                wm.getDefaultDisplay().getMetrics(metrics);
+        int densityDpiDefault = DisplayMetrics.DENSITY_DEFAULT;
+        float densityDefault = (float) densityDpiStable / densityDpiDefault;
 
-                metrics.density = defaultDensity;
-                metrics.scaledDensity = configuration.fontScale * configuration.densityDpi;
-                getBaseContext().getResources().updateConfiguration(configuration, metrics);
-            }
-        }
+        //ignore system zoom setting, set zoom by default
+        //NOTE: the smaller densityDpiStable the zoom is smaller
+        configuration.densityDpi = densityDpiStable > xDpi ? densityDpiStable : xDpi;
+
+        //Set font scale by default
+        configuration.fontScale = (float) 1.00;
+        //ignore system scaling for fonts, set scale factor by default
+        metrics.density = densityDefault;
+        metrics.scaledDensity = configuration.fontScale * densityDefault;
+        getBaseContext().getResources().updateConfiguration(configuration, metrics);
     }
 }
