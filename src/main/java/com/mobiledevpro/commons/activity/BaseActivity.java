@@ -252,21 +252,33 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         if (wm == null) return;
 
-        //Device may has different screen resolution modes.
-        //As example, Samsung S8: 422 in FHD+, 562 in WQHD+
-        int xDpi = (int) getResources().getDisplayMetrics().xdpi;
-
         int densityDpiStable = Configuration.DENSITY_DPI_UNDEFINED;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             densityDpiStable = DisplayMetrics.DENSITY_DEVICE_STABLE; //480
         }
+
+        //Device may has different screen resolution modes.
+        //As example, Samsung S8: 422 in FHD+, 562 in WQHD+
+        int xDpi = (int) getResources().getDisplayMetrics().xdpi;
+
+        //round it to bigger value
+        if (xDpi > DisplayMetrics.DENSITY_XXHIGH) {
+            xDpi = DisplayMetrics.DENSITY_XXXHIGH; //640
+        } else if (xDpi > DisplayMetrics.DENSITY_XHIGH) {
+            xDpi = DisplayMetrics.DENSITY_XXHIGH; //480
+        } else if (xDpi > DisplayMetrics.DENSITY_HIGH) {
+            xDpi = DisplayMetrics.DENSITY_XHIGH; //320
+        }
+
+        if (xDpi > 0)
+            densityDpiStable = xDpi;
 
         int densityDpiDefault = DisplayMetrics.DENSITY_DEFAULT;
         float densityDefault = (float) densityDpiStable / densityDpiDefault;
 
         //ignore system zoom setting, set zoom by default
         //NOTE: the smaller densityDpiStable the zoom is smaller
-        configuration.densityDpi = densityDpiStable > xDpi ? densityDpiStable : xDpi;
+        configuration.densityDpi = densityDpiStable;
 
         //Set font scale by default
         configuration.fontScale = (float) 1.00;
