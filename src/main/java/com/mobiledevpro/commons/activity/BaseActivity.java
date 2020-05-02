@@ -258,7 +258,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         }
 
         //Device may has different screen resolution modes.
-        //As example, Samsung S8: 422 in FHD+, 562 in WQHD+
+        //As example, Samsung S8: 422 in FHD+, 562 in WQHD+, but Google Pixel may has 2
         int xDpi = (int) getResources().getDisplayMetrics().xdpi;
 
         //round it to bigger value
@@ -270,7 +270,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
             xDpi = DisplayMetrics.DENSITY_XHIGH; //320
         }
 
-        if (xDpi > 0)
+        //!!! Check, xDpi value should not be lower than DENSITY_XHIGH
+        if (xDpi >= DisplayMetrics.DENSITY_XHIGH)
             densityDpiStable = xDpi;
 
         int densityDpiDefault = DisplayMetrics.DENSITY_DEFAULT;
