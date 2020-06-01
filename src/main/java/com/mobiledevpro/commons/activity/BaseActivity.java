@@ -257,21 +257,29 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
             densityDpiStable = DisplayMetrics.DENSITY_DEVICE_STABLE; //480
         }
 
-        //Device may has different screen resolution modes.
-        //As example, Samsung S8: 422 in FHD+, 562 in WQHD+, but Google Pixel may has 2
+        //Device may has a different screen resolution modes.
+        //As example, Samsung S8: 281dpi in HD+, 422dpi in FHD+, 562dpi in WQHD+,
+        //but Google Pixel has 2dpi. wtf??
         int xDpi = (int) getResources().getDisplayMetrics().xdpi;
 
-        //round it to bigger value (it causes an issue: when xDpi == 483, the UI is bigger than needed)
-        /*
-        if (xDpi > DisplayMetrics.DENSITY_XXHIGH) {
-            xDpi = DisplayMetrics.DENSITY_XXXHIGH; //640
-        } else if (xDpi > DisplayMetrics.DENSITY_XHIGH) {
-            xDpi = DisplayMetrics.DENSITY_XXHIGH; //480
-        } else if (xDpi > DisplayMetrics.DENSITY_HIGH) {
-            xDpi = DisplayMetrics.DENSITY_XHIGH; //320
-        }*/
+        //Google Pixel has 2dpi
+        if (xDpi < DisplayMetrics.DENSITY_MEDIUM)
+            xDpi = densityDpiStable;
 
-        //!!! Check, xDpi value should not be lower than DENSITY_XHIGH
+        //if between 240 and 320 ==> set 320
+        if (xDpi > DisplayMetrics.DENSITY_HIGH && xDpi <= DisplayMetrics.DENSITY_XHIGH) {
+            xDpi = DisplayMetrics.DENSITY_XHIGH;
+        } else if (xDpi > DisplayMetrics.DENSITY_XHIGH && xDpi <= DisplayMetrics.DENSITY_XXHIGH) {
+            //if between 320 and 480 ==> set 480
+            xDpi = DisplayMetrics.DENSITY_XXHIGH;
+        } else if (xDpi > DisplayMetrics.DENSITY_XXHIGH && xDpi < DisplayMetrics.DENSITY_560) {
+            //if between 480 and 560 ==> set 480
+            xDpi = DisplayMetrics.DENSITY_XXHIGH;
+        } else if (xDpi >= DisplayMetrics.DENSITY_560) {
+            //if more than 560 ==> set 640
+            xDpi = DisplayMetrics.DENSITY_XXXHIGH;
+        }
+
         if (xDpi >= DisplayMetrics.DENSITY_XHIGH)
             densityDpiStable = xDpi;
 
