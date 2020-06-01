@@ -261,14 +261,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
         //As example, Samsung S8: 422 in FHD+, 562 in WQHD+, but Google Pixel may has 2
         int xDpi = (int) getResources().getDisplayMetrics().xdpi;
 
-        //round it to bigger value
+        //round it to bigger value (it causes an issue: when xDpi == 483, the UI is bigger than needed)
+        /*
         if (xDpi > DisplayMetrics.DENSITY_XXHIGH) {
             xDpi = DisplayMetrics.DENSITY_XXXHIGH; //640
         } else if (xDpi > DisplayMetrics.DENSITY_XHIGH) {
             xDpi = DisplayMetrics.DENSITY_XXHIGH; //480
         } else if (xDpi > DisplayMetrics.DENSITY_HIGH) {
             xDpi = DisplayMetrics.DENSITY_XHIGH; //320
-        }
+        }*/
 
         //!!! Check, xDpi value should not be lower than DENSITY_XHIGH
         if (xDpi >= DisplayMetrics.DENSITY_XHIGH)
